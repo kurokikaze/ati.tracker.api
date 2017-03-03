@@ -33,10 +33,31 @@ function processStartRide(req, res, next) {
           "lon": 37.61
         };
 
+        if (
+          req.body.startPoint && 
+          req.body.startPoint.lat && 
+          req.body.startPoint.lon) {
+          startPoint = {
+            "lat" : req.body.startPoint.lat,
+            "lon" : req.body.startPoint.lon
+          }
+        }
+
         var endPoint = {
           "lat": 59.938,
           "lon": 30.314
         };
+
+        if (
+          req.body.endPoint && 
+          req.body.endPoint.lat && 
+          req.body.endPoint.lon) {
+          endPoint = {
+            "lat" : req.body.endPoint.lat,
+            "lon" : req.body.endPoint.lon
+          }
+        }
+
 
         var r = geod.Inverse(startPoint.lat, startPoint.lon, endPoint.lat, endPoint.lon);
         var distance = r.s12.toFixed(0); // Округляем до метра, GPS всё равно точнее не покажет

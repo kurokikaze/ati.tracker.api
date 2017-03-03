@@ -18,7 +18,11 @@ function processGetPoints(req, res, next) {
         var loadId = req.params.loadid;
 
         db.collection('loadid:' + loadId).find().toArray(function(err, result) {
-          res.send(result);
+          if (req.query.callback) {
+            res.send(req.query.callback + '(' + JSON.stringify(result) + ');');
+          } else {
+            res.send(result);
+          }
         });
       }
   });
