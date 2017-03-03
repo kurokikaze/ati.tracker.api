@@ -9,5 +9,7 @@
     "dependencies": {
         "express": "4.15.0",
         "mongodb": "latest"
-    }
+    },
+    "license": "MIT",
+    "desciption": "Point tracker API"
 }
