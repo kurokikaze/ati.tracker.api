@@ -26,12 +26,18 @@ function processSetPoint(req, res, next) {
                     points.push(point);
                 }
             }
-            db.collection('loadid:' + loadId).insertMany(points, function(r, err) {
-                var answer = {
-                    'percent': 3.4
-                };
+            db.collection("currentRides").find({"loadId": loadId}).toArray(function(err, result) {
+                if (result && result.length > 0 && result[0].status != "finished") {
+                    db.collection('loadid:' + loadId).insertMany(points, function(r, err) {
+                        var answer = {
+                            'percent': 3.4
+                        };
 
-                res.send(err ? err : answer);
+                        res.send(err ? err : answer);
+                    });
+                } else {
+                    res.send({"err" : "Поездка по loadId " + loadId + " не найдена либо завершена"});
+                }
             });
         } else {
             var lat = req.body.lat ? req.body.lat : req.query.lat; 

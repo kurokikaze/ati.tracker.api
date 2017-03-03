@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var startRide = require('./routes/startRide');
+var endRide = require('./routes/endRide');
 var setPoint = require('./routes/setPoint');
 var getPoints = require('./routes/getPoints');
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/startRide', startRide);
+app.use('/endRide', endRide);
 app.use('/setPoint', setPoint);
 app.use('/getPoints', getPoints);
 
