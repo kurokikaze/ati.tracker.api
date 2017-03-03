@@ -1,0 +1,13 @@
+{
+    "name" : "ati.tracker.api",
+    "version": "0.0.1",
+    "repository" :
+    { 
+        "type" : "git",
+        "url" : "https://github.com/kurokikaze/ati.tracker.api.git"
+    },
+    "dependencies": {
+        "express": "4.15.0",
+        "mongodb": "latest"
+    }
+}
