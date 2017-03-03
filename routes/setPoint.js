@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var config = require('../bin/config.js');
-
+var debug = require('debug')('ati-tracker-api');
 
 function processSetPoint(req, res, next) {
 
@@ -10,29 +10,52 @@ function processSetPoint(req, res, next) {
       if (err) {
         throw err
       } else {
-
-        if (req.body && req.body != '') {
-          console.error(req.body);
-          //var request = JSON.parse(req.body);
-        }
-
-        var lat = req.params.lat ? req.params.lat : req.query.lat; 
-        var lon = req.params.lon ? req.params.lon : req.query.lon; 
-        var time = req.params.time ? req.params.time : req.query.time; 
-
         var loadId = req.params.loadid;
-        var point = {
-          "lat": lat ? lat : 12.01,
-          "lon": lon ? lon : 12.02,
-          "time": time ? time : Date.now()
-        }
-          db.collection('loadid:' + loadId).insertOne(point, function(r, err) {
-            var answer = {
-                'percent': 1.2
-            };
 
-            res.send(answer);
-          });
+        if (req.body.length) {
+            var points = [];
+            for (var i in req.body) {
+                if (req.body.hasOwnProperty(i)) {
+                    var sentPoint = req.body[i];
+                    var point = {
+                        "lat": sentPoint.lat ? sentPoint.lat : 314,
+                        "lon": sentPoint.lon ? sentPoint.lon : 420,
+                        "time":  sentPoint.time ? sentPoint.time : Date.now()
+                    }
+
+                    points.push(point);
+                }
+            }
+            db.collection('loadid:' + loadId).insertMany(points, function(r, err) {
+                var answer = {
+                    'percent': 3.4
+                };
+
+                res.send(err ? err : answer);
+            });
+        } else {
+            var lat = req.body.lat ? req.body.lat : req.query.lat; 
+            var lon = req.body.lon ? req.body.lon : req.query.lon; 
+            var time = req.body.time ? req.body.time : req.query.time; 
+
+            debug("load: %s", loadId);
+            debug("lat: %d", lat);
+            debug("lon: %d", lon);
+            debug("time: %d", time);
+
+            var point = {
+                "lat": lat ? lat : 12.01,
+                "lon": lon ? lon : 12.02,
+                "time": time ? time : Date.now()
+            }
+            db.collection('loadid:' + loadId).insertOne(point, function(r, err) {
+                var answer = {
+                    'percent': 1.2
+                };
+
+                res.send(answer);
+            });
+        }
       }
   });
   
