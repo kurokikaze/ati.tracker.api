@@ -1,15 +1,24 @@
 {
-    "name" : "ati.tracker.api",
-    "version": "0.0.1",
-    "repository" :
-    { 
-        "type" : "git",
-        "url" : "https://github.com/kurokikaze/ati.tracker.api.git"
-    },
-    "dependencies": {
-        "express": "4.15.0",
-        "mongodb": "latest"
-    },
+  "name" : "ati.tracker.api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "repository" :
+  { 
+      "type" : "git",
+      "url" : "https://github.com/kurokikaze/ati.tracker.api.git"
+  },
+  "dependencies": {
+    "body-parser": "~1.16.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.0",
+    "express": "~4.14.1",
+    "morgan": "~1.7.0",
+    "serve-favicon": "~2.3.2",
+    "mongodb": "latest"
+  },
     "license": "MIT",
     "desciption": "Point tracker API"
 }
