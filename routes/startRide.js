@@ -71,6 +71,7 @@ function processStartRide(req, res, next) {
           "startPoint": startPoint,
           "endPoint": endPoint,
           "distance": distance,
+          "needsPhoto": false,
           "currentProgress": 0
         };
 

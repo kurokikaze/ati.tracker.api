@@ -16,7 +16,11 @@ function processSetPoint(req, res, next) {
         var loadId = req.params.loadid;
 
         if (req.body.length) {
+
             var points = [];
+            var resultPercent = 0;
+
+            // Конвертируем точки
             for (var i in req.body) {
                 if (req.body.hasOwnProperty(i)) {
                     var sentPoint = req.body[i];
@@ -29,13 +33,28 @@ function processSetPoint(req, res, next) {
                     points.push(point);
                 }
             }
+
+            // Сохраняем
             db.collection("currentRides").find({"loadId": loadId}).toArray(function(err, result) {
                 if (result && result.length > 0 && result[0].status != "finished") {
-                    db.collection('loadid:' + loadId).insertMany(points, function(r, err) {
-                        var answer = {
-                            'percent': 3.4
-                        };
+                    var ride = result[0];
+                    db.collection('loadid:' + loadId).insertMany(points, function(err, r) {
+                        var lastPoint = points[points.length - 1];
 
+                        var r = geod.Inverse(ride.endPoint.lat, ride.endPoint.lon, lastPoint.lat, lastPoint.lon);
+                        var distance = Math.floor(r.s12); // Округляем до метра, GPS всё равно точнее не покажет
+                        debug("last point distance: %f", distance);
+
+                        var percentage = 100 - (distance / ride.distance) * 100;
+                        
+                        if (percentage > ride.currentProgress) {
+                            resultPercent = percentage.toFixed(0);
+                        }
+
+                        var answer = {
+                            'percent': resultPercent,
+                            'needsPhoto' : (ride.needsPhoto == true)
+                        }
                         res.send(err ? err : answer);
                     });
                 } else {
@@ -78,7 +97,8 @@ function processSetPoint(req, res, next) {
                     
                     db.collection('loadid:' + loadId).insertOne(point, function(r, err) {
                         var answer = {
-                            'percent': resultPercent
+                            'percent': resultPercent,
+                            'needsPhoto' : (ride.needsPhoto == true)
                         };
 
                         res.send(answer);
