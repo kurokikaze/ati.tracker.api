@@ -54,12 +54,18 @@ function processSetPoint(req, res, next) {
                 "lon": lon ? lon : 12.02,
                 "time": time ? time : Date.now()
             }
-            db.collection('loadid:' + loadId).insertOne(point, function(r, err) {
-                var answer = {
-                    'percent': 1.2
-                };
+            db.collection("currentRides").find({"loadId": loadId}).toArray(function(err, result) {
+                if (result && result.length > 0 && result[0].status != "finished") {
+                    db.collection('loadid:' + loadId).insertOne(point, function(r, err) {
+                        var answer = {
+                            'percent': 1.2
+                        };
 
-                res.send(answer);
+                        res.send(answer);
+                    });
+                } else {
+                    res.send({"err" : "Поездка по loadId " + loadId + " не найдена либо завершена"});
+                }
             });
         }
       }
