@@ -43,7 +43,7 @@ function processStartRide(req, res, next) {
           db.collection('loadid:' + loadId).insertOne(point);
           var answer = {};
 
-          res.send('Начал перевозку для груза ' + loadId + ', lat: ' + lat + ', lon: ' + lon + ', time: ' + time);
+          res.send('Начал перевозку для груза ' + loadId + ', lat: ' + lat + ', lon: ' + lon + ', time: ' + time + ', money: ' + money);
         })
       }
   });
