@@ -12,4 +12,6 @@ html
     h2= "Впрочем вру, что-нибудь да будет"
     div
       p
-        a(href="/startRide/thisisloadid")= "Начать перевозку для груза 'thisisloadid'"
+        a(href="/startRide/thisisloadid?lat=1&lon=2&time=12323")= "Начать перевозку для груза 'thisisloadid'"
+      p
+        a(href="/setPoint/thisisloadid?lat=4&lon=5&time=12323")= "Добавить точку для груза 'thisisloadid'"
