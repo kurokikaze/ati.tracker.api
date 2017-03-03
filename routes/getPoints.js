@@ -17,8 +17,8 @@ function processGetPoints(req, res, next) {
 
         var loadId = req.params.loadid;
 
-        db.collection('loadid:' + loadId).find({}, function(r, err) {
-          res.send(r);
+        db.collection('loadid:' + loadId).find().toArray(function(err, result) {
+          res.send(result);
         });
       }
   });
