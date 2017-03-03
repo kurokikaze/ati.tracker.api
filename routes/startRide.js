@@ -3,6 +3,9 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var config = require('../bin/config.js');
 var debug = require('debug')('ati-tracker-api');
+var geographicLib = require('geographiclib');
+
+var geod = geographicLib.Geodesic.WGS84;
 
 function processStartRide(req, res, next) {
 
@@ -25,12 +28,29 @@ function processStartRide(req, res, next) {
           "time": time ? time : Date.now()
         }
 
+        var startPoint = {
+          "lat" : 55.75,
+          "lon": 37.61
+        };
+
+        var endPoint = {
+          "lat": 59.938,
+          "lon": 30.314
+        };
+
+        var r = geod.Inverse(startPoint.lat, startPoint.lon, endPoint.lat, endPoint.lon);
+        var distance = r.s12.toFixed(0); // Округляем до метра, GPS всё равно точнее не покажет
+
         var rideObject = {
           "loadId": loadId,
           "status": "started",
           "startTime": Date.now(),
           "endTime": null,
-          "money": money ? money : 500
+          "money": money ? money : 500,
+          "startPoint": startPoint,
+          "endPoint": endPoint,
+          "distance": distance,
+          "currentProgress": 0
         };
 
         debug(rideObject);
@@ -41,10 +61,14 @@ function processStartRide(req, res, next) {
 
         db.collection('loadid:' + loadId).remove(function(err, r){
           db.collection('loadid:' + loadId).insertOne(point);
+          // Точка вставлена, теперь надо найти расстояние
+          var r = geod.Inverse(startPoint.lat, startPoint.lon, lat, lon);
+          var distance = r.s12.toFixed(0); // Округляем до метра, GPS всё равно точнее не покажет
+
           var answer = {};
 
           res.send('Начал перевозку для груза ' + loadId + ', lat: ' + lat + ', lon: ' + lon + ', time: ' + time + ', money: ' + money);
-        })
+        });
       }
   });
   

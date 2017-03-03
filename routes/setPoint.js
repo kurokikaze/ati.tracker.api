@@ -3,6 +3,9 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var config = require('../bin/config.js');
 var debug = require('debug')('ati-tracker-api');
+var geographicLib = require('geographiclib');
+
+var geod = geographicLib.Geodesic.WGS84;
 
 function processSetPoint(req, res, next) {
 
@@ -54,11 +57,28 @@ function processSetPoint(req, res, next) {
                 "lon": lon ? lon : 12.02,
                 "time": time ? time : Date.now()
             }
-            db.collection("currentRides").find({"loadId": loadId}).toArray(function(err, result) {
-                if (result && result.length > 0 && result[0].status != "finished") {
+
+            var resultPercent = 0;
+
+            db.collection("currentRides").find({"loadId": loadId}).toArray(function(err, rides) {
+                if (rides && rides.length > 0 && rides[0].status != "finished") {
+                    var ride = rides[0];
+                    if (ride.endPoint && ride.distance) {
+                        debug("endpoint found");
+                        var r = geod.Inverse(ride.endPoint.lat, ride.endPoint.lon, lat, lon);
+                        var distance = Math.floor(r.s12); // Округляем до метра, GPS всё равно точнее не покажет
+                        debug("point distance: %f", distance);
+
+                        var percentage = 100 - (distance / ride.distance) * 100;
+                        
+                        if (percentage > ride.currentProgress) {
+                            resultPercent = percentage.toFixed(0);
+                        }
+                    }
+                    
                     db.collection('loadid:' + loadId).insertOne(point, function(r, err) {
                         var answer = {
-                            'percent': 1.2
+                            'percent': resultPercent
                         };
 
                         res.send(answer);
