@@ -25,8 +25,6 @@ function processGetRide(req, res, next) {
                 } else {
                     res.send(ride);
                 }
-                
-                res.send();
             } else {
                 res.send({'error': 'Поездка с id груза ' + loadId + ' не найдена'});
             }
