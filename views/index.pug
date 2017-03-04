@@ -26,7 +26,8 @@ html
       p
         a(href="/setPoint/thisisloadid?lat=58.521&lon=31.271&time=12323"  target="_blank")= "Добавить точку для груза 'thisisloadid' (Великий Новгород, почти приехали)"
       p
-        a(href="/sendPhoto/thisisloadid" target="_blank")= "Добавление фото работает только по POST-запросу, поля: lat, lon, time, photo. В photo ожидается картинка в формате png, закодированная в base64"
+        a(href="/sendPhoto/thisisloadid" target="_blank")= "Добавление фото" 
+        span= " работает только по POST-запросу, поля: lat, lon, time, photo. В photo ожидается картинка в формате png, закодированная в base64"
       p
         a(href="/getPoints/thisisloadid" target="_blank")= "Получить точки для груза 'thisisloadid'"
       p
