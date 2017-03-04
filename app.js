@@ -13,6 +13,8 @@ var setPoint = require('./routes/setPoint');
 var getPoints = require('./routes/getPoints');
 var checkStatus = require('./routes/checkStatus');
 var requestPhoto = require('./routes/requestPhoto');
+var sendPhoto = require('./routes/sendPhoto');
+var getRide = require('./routes/getRide');
 
 var app = express();
 
@@ -36,8 +38,11 @@ app.use('/endRide', endRide);
 app.use('/setPoint', setPoint);
 app.use('/getPoints', getPoints);
 
+app.use('/getRide', getRide);
+
 app.use('/checkStatus', checkStatus);
 app.use('/requestPhoto', requestPhoto);
+app.use('/sendPhoto', sendPhoto);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

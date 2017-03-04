@@ -15,13 +15,13 @@ function processSendPhoto(req, res, next) {
 
         var lat = req.body.lat;
         var lon = req.body.lon;
-        var timestamp = Date.now();
+        var timestamp = req.body.time ? req.body.time : Date.now();
 
         var photoBuffer = Buffer.from(req.body.photo, 'base64');
 
-        var fileName = loadId + '_' + timestamp + '.png';
+        var filename = loadId + '_' + timestamp + '.png';
 
-        fs.writeFile("../public/images/" + fileName, photoBuffer);
+        fs.writeFile("./public/images/" + filename, photoBuffer);
 
         db.collection("currentRides").find({"loadId": loadId}).toArray(function(err, rides) {
             if (rides && rides.length > 0 && rides[0].status != "finished") {

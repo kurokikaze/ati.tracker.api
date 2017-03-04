@@ -78,6 +78,7 @@ function processStartRide(req, res, next) {
         debug(rideObject);
 
         db.collection('currentRides').remove({"loadId": loadId}, function(err, r) {
+          db.collection("loadPhotos").remove({"loadId": loadId});
           db.collection('currentRides').insertOne(rideObject);
         });
 

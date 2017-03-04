@@ -14,6 +14,8 @@ html
       p
         a(href="/startRide/thisisloadid?lat=55.75&lon=37.61&time=12323&money=600" target="_blank")= "Начать перевозку для груза 'thisisloadid' (Москва - СПб)"
       p
+        a(href="/getRide/thisisloadid" target="_blank")= "Получить объект перевозки для груза 'thisisloadid'"
+      p
         a(href="/checkStatus/thisisloadid"  target="_blank")= "Проверить нужно ли фото груза 'thisisloadid'"
       p
         a(href="/requestPhoto/thisisloadid"  target="_blank")= "Запросить фото груза 'thisisloadid'"
@@ -23,6 +25,8 @@ html
         a(href="/setPoint/thisisloadid?lat=57.879&lon=34.106&time=12323"  target="_blank")= "Добавить точку для груза 'thisisloadid' (Бологое, полпути от Москвы)"
       p
         a(href="/setPoint/thisisloadid?lat=58.521&lon=31.271&time=12323"  target="_blank")= "Добавить точку для груза 'thisisloadid' (Великий Новгород, почти приехали)"
+      p
+        a(href="/sendPhoto/thisisloadid" target="_blank")= "Добавление фото работает только по POST-запросу, поля: lat, lon, time, photo. В photo ожидается картинка в формате png, закодированная в base64"
       p
         a(href="/getPoints/thisisloadid" target="_blank")= "Получить точки для груза 'thisisloadid'"
       p

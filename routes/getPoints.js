@@ -18,11 +18,26 @@ function processGetPoints(req, res, next) {
         var loadId = req.params.loadid;
 
         db.collection('loadid:' + loadId).find().toArray(function(err, result) {
-          if (req.query.callback) {
-            res.send(req.query.callback + '(' + JSON.stringify(result) + ');');
-          } else {
-            res.send(result);
-          }
+            db.collection("loadPhotos").find({"loadId": loadId}).toArray(function(err, photos) {
+                var points = result;
+                for (var photoId in photos) {
+                    if (photos.hasOwnProperty(photoId)) {
+                        var photo = photos[photoId];
+                        points.push({
+                            "lat": photo.lat,
+                            "lon": photo.lon,
+                            "time": photo.time,
+                            "photo": photo.path
+                        });
+                    }
+                }
+
+                if (req.query.callback) {
+                    res.send(req.query.callback + '(' + JSON.stringify(points) + ');');
+                } else {
+                    res.send(points);
+                }
+            });
         });
       }
   });
