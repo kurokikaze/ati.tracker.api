@@ -58,7 +58,6 @@ function processStartRide(req, res, next) {
           }
         }
 
-
         var r = geod.Inverse(startPoint.lat, startPoint.lon, endPoint.lat, endPoint.lon);
         var distance = r.s12.toFixed(0); // Округляем до метра, GPS всё равно точнее не покажет
 

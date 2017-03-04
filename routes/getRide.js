@@ -19,7 +19,14 @@ function processGetRide(req, res, next) {
 
         db.collection('currentRides').find({"loadId" : loadId}).toArray(function(err, result) {
             if (result && result.length > 0) {
-                res.send(result[0]);
+                var ride = result[0]
+                if (req.query.callback) {
+                    res.send(req.query.callback + '(' + JSON.stringify(ride) + ');');
+                } else {
+                    res.send(ride);
+                }
+                
+                res.send();
             } else {
                 res.send({'error': 'Поездка с id груза ' + loadId + ' не найдена'});
             }
