@@ -32,6 +32,10 @@ function processGetPoints(req, res, next) {
                     }
                 }
 
+                var points = points.sort(function(a, b){
+                    return a.time > b.time
+                })
+
                 if (req.query.callback) {
                     res.send(req.query.callback + '(' + JSON.stringify(points) + ');');
                 } else {
