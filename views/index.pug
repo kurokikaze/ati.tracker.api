@@ -12,7 +12,7 @@ html
     h2= "Впрочем вру, что-нибудь да будет"
     div
       p
-        a(href="/startRide/thisisloadid?lat=55.75&lon=37.61&time=12323&money=600" target="_blank")= "Начать перевозку для груза 'thisisloadid' (Москва - СПб)"
+        a(href="/startRide/thisisloadid?lat=55.75&lon=37.61&money=600" target="_blank")= "Начать перевозку для груза 'thisisloadid' (Москва - СПб)"
       p
         a(href="/getRide/thisisloadid" target="_blank")= "Получить объект перевозки для груза 'thisisloadid'"
       p
@@ -20,15 +20,15 @@ html
       p
         a(href="/requestPhoto/thisisloadid"  target="_blank")= "Запросить фото груза 'thisisloadid'"
       p
-        a(href="/setPoint/thisisloadid?lat=56.858&lon=35.900&time=12323"  target="_blank")= "Добавить точку для груза 'thisisloadid' (Тверь, треть пути от Москвы)"
+        a(href="/setPoint/thisisloadid?lat=56.858&lon=35.900"  target="_blank")= "Добавить точку для груза 'thisisloadid' (Тверь, треть пути от Москвы)"
       p
-        a(href="/setPoint/thisisloadid?lat=57.879&lon=34.106&time=12323"  target="_blank")= "Добавить точку для груза 'thisisloadid' (Бологое, полпути от Москвы)"
+        a(href="/setPoint/thisisloadid?lat=57.879&lon=34.106"  target="_blank")= "Добавить точку для груза 'thisisloadid' (Бологое, полпути от Москвы)"
       p
-        a(href="/setPoint/thisisloadid?lat=58.521&lon=31.271&time=12323"  target="_blank")= "Добавить точку для груза 'thisisloadid' (Великий Новгород, почти приехали)"
+        a(href="/setPoint/thisisloadid?lat=58.521&lon=31.271"  target="_blank")= "Добавить точку для груза 'thisisloadid' (Великий Новгород, почти приехали)"
       p
         a(href="/sendPhoto/thisisloadid" target="_blank")= "Добавление фото" 
         span= " работает только по POST-запросу, поля: lat, lon, time, photo. В photo ожидается картинка в формате png, закодированная в base64"
       p
         a(href="/getPoints/thisisloadid" target="_blank")= "Получить точки для груза 'thisisloadid'"
       p
-        a(href="/endRide/thisisloadid?lat=59.938&lon=30.314&time=12323" target="_blank")= "Завершить перевозку для груза 'thisisloadid'"
+        a(href="/endRide/thisisloadid?lat=59.938&lon=30.314" target="_blank")= "Завершить перевозку для груза 'thisisloadid'"
