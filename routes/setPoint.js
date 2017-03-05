@@ -7,6 +7,10 @@ var geographicLib = require('geographiclib');
 
 var geod = geographicLib.Geodesic.WGS84;
 
+function isNumeric(number) {
+    return !isNaN(parseFloat(number)) && isFinite(number);
+}
+
 function processSetPoint(req, res, next) {
 
   MongoClient.connect(config.mongo, function(err, db) {
@@ -71,10 +75,14 @@ function processSetPoint(req, res, next) {
             debug("lon: %d", lon);
             debug("time: %d", time);
 
-            var point = {
-                "lat": lat ? lat : 12.01,
-                "lon": lon ? lon : 12.02,
-                "time": time ? time : Date.now()
+            var point = null;
+
+            if (isNumeric(lat) && isNumeric(lon)) {
+                var point = {
+                    "lat": lat,
+                    "lon": lon,
+                    "time": time ? time : Date.now()
+                }
             }
 
             var resultPercent = 0;
@@ -95,14 +103,18 @@ function processSetPoint(req, res, next) {
                         }
                     }
                     
-                    db.collection('loadid:' + loadId).insertOne(point, function(r, err) {
-                        var answer = {
-                            'percent': resultPercent,
-                            'needsPhoto' : (ride.needsPhoto == true)
-                        };
+                    var answer = {
+                        'percent': resultPercent,
+                        'needsPhoto' : (ride.needsPhoto == true)
+                    };
 
+                    if (point === null) {
                         res.send(answer);
-                    });
+                    } else {
+                        db.collection('loadid:' + loadId).insertOne(point, function(r, err) {
+                            res.send(answer);
+                        });
+                    }
                 } else {
                     res.send({"err" : "Поездка по loadId " + loadId + " не найдена либо завершена"});
                 }

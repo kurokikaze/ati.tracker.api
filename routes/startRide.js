@@ -7,6 +7,10 @@ var geographicLib = require('geographiclib');
 
 var geod = geographicLib.Geodesic.WGS84;
 
+function isNumeric(number) {
+    return !isNaN(parseFloat(number)) && isFinite(number);
+}
+
 function processStartRide(req, res, next) {
 
   MongoClient.connect(config.mongo, function(err, db) {
@@ -22,10 +26,14 @@ function processStartRide(req, res, next) {
 
         var loadId = req.params.loadid;
 
-        var point = {
-          "lat": lat ? lat : 12.01,
-          "lon": lon ? lon : 12.02,
-          "time": time ? time : Date.now()
+        var point = null;
+
+        if (isNumeric(lat) && isNumeric(lon)) { 
+          var point = {
+            "lat": lat,
+            "lon": lon,
+            "time": time ? time : Date.now()
+          }
         }
 
         var startPoint = {
@@ -82,14 +90,16 @@ function processStartRide(req, res, next) {
         });
 
         db.collection('loadid:' + loadId).remove(function(err, r){
-          db.collection('loadid:' + loadId).insertOne(point);
-          // Точка вставлена, теперь надо найти расстояние
-          var r = geod.Inverse(startPoint.lat, startPoint.lon, lat, lon);
-          var distance = r.s12.toFixed(0); // Округляем до метра, GPS всё равно точнее не покажет
+            if (!(point === null)) {
+              db.collection('loadid:' + loadId).insertOne(point);
+            }
+            // Точка вставлена, теперь надо найти расстояние
+            /*var r = geod.Inverse(startPoint.lat, startPoint.lon, lat, lon);
+            var distance = r.s12.toFixed(0); // Округляем до метра, GPS всё равно точнее не покажет
 
-          var answer = {};
+            var answer = {};*/
 
-          res.send('Начал перевозку для груза ' + loadId + ', lat: ' + lat + ', lon: ' + lon + ', time: ' + time + ', money: ' + money);
+            res.send('Начал перевозку для груза ' + loadId + ', lat: ' + lat + ', lon: ' + lon + ', time: ' + time + ', money: ' + money);
         });
       }
   });
