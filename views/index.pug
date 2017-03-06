@@ -35,4 +35,5 @@ html
     h2= "Кто-то куда-то едет"
     ul
       each ride in rides
-        li= ride.loadId
+        li
+          a(href="http://192.168.222.54:5555/?loadId=" + ride.loadId target="_blank")= ride.loadId
