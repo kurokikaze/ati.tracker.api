@@ -37,3 +37,6 @@ html
       each ride in rides
         li
           a(href="http://192.168.222.54:5555/?loadId=" + ride.loadId target="_blank")= ride.loadId
+          span= " Расстояние " + ride.distance + " м."
+          if (ride.status == "finished")
+            span= " (завершена)"
