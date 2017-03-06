@@ -41,9 +41,11 @@ function processSendPhoto(req, res, next) {
 
                 db.collection("currentRides").updateOne({"loadId": loadId}, ride, function(r, err) {
                     res.send(ride);
+                    res.end();
                 });
             } else {
                 res.send({"err" : "Поездка по loadId " + loadId + " не найдена либо завершена"});
+                res.end();
             }
         });
 

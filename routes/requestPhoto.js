@@ -19,10 +19,20 @@ function processRequestPhoto(req, res, next) {
                 ride.needsPhoto = true;
                                 
                 db.collection("currentRides").updateOne({"loadId": loadId}, ride, function(r, err) {
-                    res.send(ride);
+                    if (req.query.callback) {
+                        res.send(req.query.callback + '(' + JSON.stringify(ride) + ');');
+                    } else {
+                        res.send(ride);
+                    }
                 });
             } else {
-                res.send({"err" : "Поездка по loadId " + loadId + " не найдена либо завершена"});
+                var error = {"err" : "Поездка по loadId " + loadId + " не найдена либо завершена"};
+                if (req.query.callback) {
+                    res.send(req.query.callback + '(' + JSON.stringify(error) + ');');
+                } else {
+                    res.send(error);
+                }
+                res.send();
             }
         });
 

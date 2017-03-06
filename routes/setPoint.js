@@ -60,10 +60,13 @@ function processSetPoint(req, res, next) {
                             'needsPhoto' : (ride.needsPhoto == true)
                         }
                         res.send(err ? err : answer);
+                        res.end();
                     });
                 } else {
                     res.send({"err" : "Поездка по loadId " + loadId + " не найдена либо завершена"});
+                    res.end();
                 }
+                
             });
         } else {
             var lat = req.body.lat ? req.body.lat : req.query.lat; 
@@ -110,13 +113,16 @@ function processSetPoint(req, res, next) {
 
                     if (point === null) {
                         res.send(answer);
+                        res.end();
                     } else {
                         db.collection('loadid:' + loadId).insertOne(point, function(r, err) {
                             res.send(answer);
+                            res.end();
                         });
                     }
                 } else {
                     res.send({"err" : "Поездка по loadId " + loadId + " не найдена либо завершена"});
+                    res.end();
                 }
             });
         }

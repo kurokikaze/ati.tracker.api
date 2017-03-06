@@ -39,8 +39,10 @@ function processCheckStatus(req, res, next) {
                 res.send(result);
 
             }
+            res.end();
           } else {
               res.send({"error": "Груз " + loadId + " не существует"});
+              res.end();
           }
         });
       }

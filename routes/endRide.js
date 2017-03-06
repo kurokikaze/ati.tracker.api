@@ -42,9 +42,11 @@ function processEndRide(req, res, next) {
                         };
 
                         res.send(answer);
+                        res.end();
                     });
                 } else {
                     res.send({"error": "no ride for load " + loadId});
+                    res.end();
                     return true;
                 }
             });

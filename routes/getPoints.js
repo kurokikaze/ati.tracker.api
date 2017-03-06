@@ -41,6 +41,7 @@ function processGetPoints(req, res, next) {
                 } else {
                     res.send(points);
                 }
+                res.end();
             });
         });
       }

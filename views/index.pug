@@ -1,6 +1,6 @@
 html
   head
-    title= "ATI Трекер"
+    title= "ATI Трекер" + title
   body
     h1= "Здесь не будет ничего"
     p= "Это же API, чего вы ждали"
@@ -32,3 +32,7 @@ html
         a(href="/getPoints/thisisloadid" target="_blank")= "Получить точки для груза 'thisisloadid'"
       p
         a(href="/endRide/thisisloadid?lat=59.938&lon=30.314" target="_blank")= "Завершить перевозку для груза 'thisisloadid'"
+    h2= "Кто-то куда-то едет"
+    ul
+      each ride in rides
+        li= ride.loadId

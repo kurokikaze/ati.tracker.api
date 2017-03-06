@@ -100,6 +100,7 @@ function processStartRide(req, res, next) {
             var answer = {};*/
 
             res.send('Начал перевозку для груза ' + loadId + ', lat: ' + lat + ', lon: ' + lon + ', time: ' + time + ', money: ' + money);
+            res.end();
         });
       }
   });
