@@ -13,9 +13,9 @@ router.get('/', function(req, res, next) {
       } else {
         db.collection('currentRides').find().toArray(function(err, result) {
           if (result && result.length > 0) {
-              res.render('index.pug', { title: 'Express', rides: result });
+              res.render('index.pug', { title: 'None', rides: result });
           } else {
-              res.render('index.pug', { title: 'Express', rides: []});
+              res.render('index.pug', { title: 'None', rides: []});
           }
         });
       }
